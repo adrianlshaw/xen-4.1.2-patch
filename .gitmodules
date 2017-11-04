@@ -1,3 +1,4 @@
 [submodule "xen"]
 	path = xen
 	url = git://xenbits.xen.org/xen.git
+	branch = RELEASE-4.1.2
