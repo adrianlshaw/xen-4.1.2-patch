@@ -1,0 +1,663 @@
+diff --git a/Config.mk b/Config.mk
+index 46391aa..3455255 100644
+--- a/Config.mk
++++ b/Config.mk
+@@ -14,7 +14,7 @@ SHELL     ?= /bin/sh
+ 
+ # Tools to run on system hosting the build
+ HOSTCC      = gcc
+-HOSTCFLAGS  = -Wall -Werror -Wstrict-prototypes -O2 -fomit-frame-pointer
++HOSTCFLAGS  = -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
+ HOSTCFLAGS += -fno-strict-aliasing
+ 
+ DISTDIR     ?= $(XEN_ROOT)/dist
+diff --git a/extras/mini-os/minios.mk b/extras/mini-os/minios.mk
+index 698648a..f3faa02 100644
+--- a/extras/mini-os/minios.mk
++++ b/extras/mini-os/minios.mk
+@@ -6,7 +6,7 @@ debug = y
+ 
+ # Define some default flags.
+ # NB. '-Wcast-qual' is nasty, so I omitted it.
+-DEF_CFLAGS += -fno-builtin -Wall -Werror -Wredundant-decls -Wno-format -Wno-redundant-decls
++DEF_CFLAGS += -fno-builtin -Wall  -Wredundant-decls -Wno-format -Wno-redundant-decls
+ DEF_CFLAGS += $(call cc-option,$(CC),-fno-stack-protector,)
+ DEF_CFLAGS += $(call cc-option,$(CC),-fgnu89-inline)
+ DEF_CFLAGS += -Wstrict-prototypes -Wnested-externs -Wpointer-arith -Winline
+diff --git a/tools/blktap/drivers/Makefile b/tools/blktap/drivers/Makefile
+index 7265c76..fea19d5 100644
+--- a/tools/blktap/drivers/Makefile
++++ b/tools/blktap/drivers/Makefile
+@@ -6,7 +6,7 @@ QCOW_UTIL    = img2qcow qcow2raw qcow-create
+ LIBAIO_DIR   = ../../libaio/src
+ MEMSHR_DIR   = ../../memshr
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ CFLAGS   += -Wno-unused
+ CFLAGS   += -I../lib
+ CFLAGS   += $(CFLAGS_libxenctrl)
+diff --git a/tools/blktap/lib/Makefile b/tools/blktap/lib/Makefile
+index 505625e..adcad1f 100644
+--- a/tools/blktap/lib/Makefile
++++ b/tools/blktap/lib/Makefile
+@@ -13,7 +13,7 @@ LDLIBS   += $(LDLIBS_libxenstore)
+ SRCS     :=
+ SRCS     += xenbus.c blkif.c xs_api.c
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ CFLAGS   += -Wno-unused
+ CFLAGS   += -fPIC
+ # get asprintf():
+diff --git a/tools/blktap2/control/Makefile b/tools/blktap2/control/Makefile
+index 4030ceb..43ad268 100644
+--- a/tools/blktap2/control/Makefile
++++ b/tools/blktap2/control/Makefile
+@@ -8,7 +8,7 @@ LIBSONAME          = $(LIBNAME).so.$(MAJOR)
+ 
+ IBIN               = tap-ctl
+ 
+-CFLAGS            += -Werror
++CFLAGS            += 
+ CFLAGS            += -Wno-unused
+ CFLAGS            += -I../include -I../drivers
+ CFLAGS            += -I$(XEN_INCLUDE) -I$(XEN_LIBXC)
+diff --git a/tools/blktap2/drivers/Makefile b/tools/blktap2/drivers/Makefile
+index b718c08..f8d7fbb 100644
+--- a/tools/blktap2/drivers/Makefile
++++ b/tools/blktap2/drivers/Makefile
+@@ -9,7 +9,7 @@ QCOW_UTIL  = img2qcow qcow-create qcow2raw
+ LOCK_UTIL  = lock-util
+ INST_DIR   = $(SBINDIR)
+ 
+-CFLAGS    += -Werror -g -O0
++CFLAGS    += -g -O0
+ CFLAGS    += -Wno-unused
+ CFLAGS    += -fno-strict-aliasing
+ CFLAGS    += -I$(BLKTAP_ROOT)/include -I$(BLKTAP_ROOT)/drivers
+diff --git a/tools/blktap2/lvm/Makefile b/tools/blktap2/lvm/Makefile
+index dc0ebfe..8c94f15 100644
+--- a/tools/blktap2/lvm/Makefile
++++ b/tools/blktap2/lvm/Makefile
+@@ -6,7 +6,7 @@ ifeq ($(LVM_UTIL_TEST),y)
+ TEST              := lvm-util
+ endif
+ 
+-CFLAGS            += -Werror
++CFLAGS            += 
+ CFLAGS            += -Wno-unused
+ CFLAGS            += -I../include
+ CFLAGS            += -D_GNU_SOURCE
+diff --git a/tools/blktap2/vhd/Makefile b/tools/blktap2/vhd/Makefile
+index cb5e145..5d824ae 100644
+--- a/tools/blktap2/vhd/Makefile
++++ b/tools/blktap2/vhd/Makefile
+@@ -8,7 +8,7 @@ SUBDIRS-y         += lib
+ IBIN               = vhd-util vhd-update
+ INST_DIR           = $(SBINDIR)
+ 
+-CFLAGS            += -Werror
++CFLAGS            += 
+ CFLAGS            += -Wno-unused
+ CFLAGS            += -I../include
+ CFLAGS            += -D_GNU_SOURCE
+diff --git a/tools/blktap2/vhd/lib/Makefile b/tools/blktap2/vhd/lib/Makefile
+index 1b3fc69..fd65ab8 100644
+--- a/tools/blktap2/vhd/lib/Makefile
++++ b/tools/blktap2/vhd/lib/Makefile
+@@ -12,7 +12,7 @@ LIBVHD-BUILD    := libvhd.a
+ 
+ INST-DIR         = $(LIBDIR)
+ 
+-CFLAGS          += -Werror
++CFLAGS          += 
+ CFLAGS          += -Wno-unused
+ CFLAGS          += -I../../include
+ CFLAGS          += -D_GNU_SOURCE
+diff --git a/tools/check/check_python_devel b/tools/check/check_python_devel
+index ee90e5d..19661a9 100755
+--- a/tools/check/check_python_devel
++++ b/tools/check/check_python_devel
+@@ -7,11 +7,3 @@ if test -z ${PYTHON}; then
+   PYTHON=python
+ fi
+ has_or_fail ${PYTHON}
+-
+-${PYTHON} -c '
+-import os.path, sys
+-for p in sys.path:
+-	if os.path.exists(p + "/config/Makefile"):
+-		sys.exit(0)
+-sys.exit(1)
+-' || fail "can't find python devel files"
+diff --git a/tools/console/Makefile b/tools/console/Makefile
+index 5a119b4..87f43d3 100644
+--- a/tools/console/Makefile
++++ b/tools/console/Makefile
+@@ -2,7 +2,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ 
+ CFLAGS  += $(CFLAGS_libxenctrl)
+ CFLAGS  += $(CFLAGS_libxenstore)
+diff --git a/tools/debugger/gdbsx/Rules.mk b/tools/debugger/gdbsx/Rules.mk
+index 6e38f2d..cc84a7d 100644
+--- a/tools/debugger/gdbsx/Rules.mk
++++ b/tools/debugger/gdbsx/Rules.mk
+@@ -1,4 +1,4 @@
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS   += -Werror -Wmissing-prototypes 
++CFLAGS   +=  -Wmissing-prototypes 
+ # (gcc 4.3x and later)   -Wconversion -Wno-sign-conversion
+diff --git a/tools/debugger/gdbsx/xg/xg_main.c b/tools/debugger/gdbsx/xg/xg_main.c
+index d2eec0b..8929061 100644
+--- a/tools/debugger/gdbsx/xg/xg_main.c
++++ b/tools/debugger/gdbsx/xg/xg_main.c
+@@ -178,7 +178,7 @@ _domctl_hcall(uint32_t cmd,            /* which domctl hypercall */
+     hypercall.op = __HYPERVISOR_domctl;
+     hypercall.arg[0] = (unsigned long)&domctl;
+ 
+-    rc = ioctl(_dom0_fd, IOCTL_PRIVCMD_HYPERCALL, (ulong)&hypercall);
++    rc = ioctl(_dom0_fd, IOCTL_PRIVCMD_HYPERCALL, (unsigned long )&hypercall);
+     if (domctlarg && sz)
+         munlock(domctlarg, sz);
+     return rc;
+@@ -218,7 +218,7 @@ _check_hyp(int guest_bitness)
+     hypercall.arg[0] = (unsigned long)XENVER_capabilities;
+     hypercall.arg[1] = (unsigned long)&xen_caps;
+ 
+-    rc = ioctl(_dom0_fd, IOCTL_PRIVCMD_HYPERCALL, (ulong)&hypercall);
++    rc = ioctl(_dom0_fd, IOCTL_PRIVCMD_HYPERCALL, (unsigned long)&hypercall);
+     munlock(&xen_caps, sizeof(xen_caps));
+     XGTRC("XENCAPS:%s\n", xen_caps);
+ 
+diff --git a/tools/debugger/xenitp/Makefile b/tools/debugger/xenitp/Makefile
+index b4d5473..a396e16 100644
+--- a/tools/debugger/xenitp/Makefile
++++ b/tools/debugger/xenitp/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-#CFLAGS  += -Werror -g -O0
++#CFLAGS  +=  -g -O0
+ 
+ CFLAGS  += $(CFLAGS_libxenctrl)
+ 
+diff --git a/tools/firmware/Rules.mk b/tools/firmware/Rules.mk
+index 8a88309..793559e 100644
+--- a/tools/firmware/Rules.mk
++++ b/tools/firmware/Rules.mk
+@@ -10,7 +10,7 @@ ifneq ($(debug),y)
+ CFLAGS += -DNDEBUG
+ endif
+ 
+-CFLAGS += -Werror
++CFLAGS += 
+ 
+ $(call cc-options-add,CFLAGS,CC,$(EMBEDDED_EXTRA_CFLAGS))
+ 
+diff --git a/tools/flask/libflask/Makefile b/tools/flask/libflask/Makefile
+index e1f5703..0e16162 100644
+--- a/tools/flask/libflask/Makefile
++++ b/tools/flask/libflask/Makefile
+@@ -9,7 +9,7 @@ XEN_LIBXC = $(XEN_ROOT)/tools/libxc
+ SRCS       :=
+ SRCS       += flask_op.c
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ CFLAGS   += -fno-strict-aliasing
+ CFLAGS   += $(INCLUDES) -I./include -I$(XEN_LIBXC) -I$(XEN_INCLUDE)
+ 
+diff --git a/tools/flask/utils/Makefile b/tools/flask/utils/Makefile
+index 85a0229..d35d0c1 100644
+--- a/tools/flask/utils/Makefile
++++ b/tools/flask/utils/Makefile
+@@ -6,7 +6,7 @@ LIBXC_ROOT = $(XEN_ROOT)/tools/libxc
+ LIBFLASK_ROOT = $(XEN_ROOT)/tools/flask/libflask
+ 
+ PROFILE=#-pg
+-BASECFLAGS=-Wall -g -Werror
++BASECFLAGS=-Wall -g 
+ BASECFLAGS+= $(PROFILE)
+ #BASECFLAGS+= -I$(XEN_ROOT)/tools
+ BASECFLAGS+= $(CFLAGS_libxenctrl)
+diff --git a/tools/libaio/harness/Makefile b/tools/libaio/harness/Makefile
+index d2483fd..cde5adc 100644
+--- a/tools/libaio/harness/Makefile
++++ b/tools/libaio/harness/Makefile
+@@ -4,7 +4,7 @@ PROGS:=$(patsubst %.t,%.p,$(TEST_SRCS))
+ HARNESS_SRCS:=main.c
+ # io_queue.c
+ 
+-CFLAGS=-Wall -Werror -g -O -laio
++CFLAGS=-Wall  -g -O -laio
+ #-lpthread -lrt
+ 
+ all: $(PROGS)
+diff --git a/tools/libfsimage/Rules.mk b/tools/libfsimage/Rules.mk
+index 0e29c25..ef89014 100644
+--- a/tools/libfsimage/Rules.mk
++++ b/tools/libfsimage/Rules.mk
+@@ -1,7 +1,7 @@
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+ CFLAGS += -Wno-unknown-pragmas -I$(XEN_ROOT)/tools/libfsimage/common/
+-CFLAGS += -Werror -D_GNU_SOURCE
++CFLAGS +=  -D_GNU_SOURCE
+ LDFLAGS += -L../common/
+ 
+ PIC_OBJS := $(patsubst %.c,%.opic,$(LIB_SRCS-y))
+diff --git a/tools/libxc/Makefile b/tools/libxc/Makefile
+index 9942c3a..3cebe26 100644
+--- a/tools/libxc/Makefile
++++ b/tools/libxc/Makefile
+@@ -67,7 +67,7 @@ OSDEP_SRCS-y                 += xenctrl_osdep_ENOSYS.c
+ 
+ -include $(XEN_TARGET_ARCH)/Makefile
+ 
+-CFLAGS   += -Werror -Wmissing-prototypes
++CFLAGS   += -Wmissing-prototypes
+ CFLAGS   += $(INCLUDES) -I. -I../xenstore -I../include
+ 
+ # Needed for posix_fadvise64() in xc_linux.c
+diff --git a/tools/libxen/Makefile.dist b/tools/libxen/Makefile.dist
+index 33ca448..647d8d0 100644
+--- a/tools/libxen/Makefile.dist
++++ b/tools/libxen/Makefile.dist
+@@ -22,7 +22,7 @@ MINOR = 0
+ CFLAGS = -Iinclude                     \
+          $(shell xml2-config --cflags) \
+          $(shell curl-config --cflags) \
+-         -W -Wall -Wmissing-prototypes -Werror -std=c99 -O2 -fPIC
++         -W -Wall -Wmissing-prototypes  -std=c99 -O2 -fPIC
+ 
+ LDFLAGS = $(shell xml2-config --libs) \
+           $(shell curl-config --libs)
+diff --git a/tools/libxl/Makefile b/tools/libxl/Makefile
+index 725d5d1..33a3809 100644
+--- a/tools/libxl/Makefile
++++ b/tools/libxl/Makefile
+@@ -11,7 +11,7 @@ MINOR = 0
+ XLUMAJOR = 1.0
+ XLUMINOR = 0
+ 
+-CFLAGS += -Werror -Wno-format-zero-length -Wmissing-declarations
++CFLAGS +=  -Wno-format-zero-length -Wmissing-declarations
+ CFLAGS += -I. -fPIC
+ CFLAGS += $(CFLAGS_libxenctrl) $(CFLAGS_libxenguest) $(CFLAGS_libxenstore) $(CFLAGS_libblktapctl)
+ 
+diff --git a/tools/memshr/Makefile b/tools/memshr/Makefile
+index d6ed42a..9acbbdb 100644
+--- a/tools/memshr/Makefile
++++ b/tools/memshr/Makefile
+@@ -3,7 +3,7 @@ include $(XEN_ROOT)/tools/Rules.mk
+ 
+ LIBMEMSHR-BUILD := libmemshr.a
+ 
+-CFLAGS          += -Werror
++CFLAGS          += 
+ CFLAGS          += -Wno-unused
+ CFLAGS          += -I../include
+ CFLAGS          += $(CFLAGS_libxenctrl)
+diff --git a/tools/misc/Makefile b/tools/misc/Makefile
+index e4e8bfe..4992b85 100644
+--- a/tools/misc/Makefile
++++ b/tools/misc/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ 
+ INCLUDES += -I $(XEN_XC)
+ INCLUDES += -I $(XEN_LIBXC)
+diff --git a/tools/misc/lomount/Makefile b/tools/misc/lomount/Makefile
+index 67636a8..5868b54 100644
+--- a/tools/misc/lomount/Makefile
++++ b/tools/misc/lomount/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ 
+ HDRS     = $(wildcard *.h)
+ OBJS     = $(patsubst %.c,%.o,$(wildcard *.c))
+diff --git a/tools/ocaml/common.make b/tools/ocaml/common.make
+index ee4d200..4ac94ed 100644
+--- a/tools/ocaml/common.make
++++ b/tools/ocaml/common.make
+@@ -8,7 +8,7 @@ OCAMLDEP ?= ocamldep
+ OCAMLLEX ?= ocamllex
+ OCAMLYACC ?= ocamlyacc
+ 
+-CFLAGS += -fPIC -Werror
++CFLAGS += -fPIC 
+ CFLAGS += -I$(TOPLEVEL)/../include -I$(TOPLEVEL)/../libxc -I$(TOPLEVEL)/../xenstore -I$(TOPLEVEL)/../libxl
+ CFLAGS-$(CONFIG_Linux) += -I$(shell ocamlc -where)
+ CFLAGS-$(CONFIG_NetBSD) += -I/usr/pkg/lib/ocaml -fPIC
+diff --git a/tools/pygrub/setup.py b/tools/pygrub/setup.py
+index 52dcf57..c4c7347 100644
+--- a/tools/pygrub/setup.py
++++ b/tools/pygrub/setup.py
+@@ -3,7 +3,7 @@ from distutils.ccompiler import new_compiler
+ import os
+ import sys
+ 
+-extra_compile_args  = [ "-fno-strict-aliasing", "-Werror" ]
++extra_compile_args  = [ "-fno-strict-aliasing", "" ]
+ 
+ XEN_ROOT = "../.."
+ 
+diff --git a/tools/python/setup.py b/tools/python/setup.py
+index 28c4d85..ddfd7f9 100644
+--- a/tools/python/setup.py
++++ b/tools/python/setup.py
+@@ -4,7 +4,7 @@ import os
+ 
+ XEN_ROOT = "../.."
+ 
+-extra_compile_args  = [ "-fno-strict-aliasing", "-Werror" ]
++extra_compile_args  = [ "-fno-strict-aliasing" ]
+ 
+ include_dirs = [ XEN_ROOT + "/tools/libxc",
+                  XEN_ROOT + "/tools/xenstore",
+diff --git a/tools/python/xen/xm/messages/xen-xm.pot b/tools/python/xen/xm/messages/xen-xm.pot
+index a600a69..18d8458 100644
+--- a/tools/python/xen/xm/messages/xen-xm.pot
++++ b/tools/python/xen/xm/messages/xen-xm.pot
+@@ -8,10 +8,11 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: PACKAGE VERSION\n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2008-03-31 17:40+0100\n"
++"POT-Creation-Date: 2017-01-22 21:08+0000\n"
+ "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+ "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+ "Language-Team: LANGUAGE <LL@li.org>\n"
++"Language: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=CHARSET\n"
+ "Content-Transfer-Encoding: 8bit\n"
+diff --git a/tools/security/Makefile b/tools/security/Makefile
+index 605bc88..c3f1433 100644
+--- a/tools/security/Makefile
++++ b/tools/security/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT = $(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ CFLAGS   += -fno-strict-aliasing
+ CFLAGS   += -I. $(CFLAGS_libxenctrl)
+ 
+diff --git a/tools/tests/mce-test/tools/Makefile b/tools/tests/mce-test/tools/Makefile
+index 43e39ad..528775f 100644
+--- a/tools/tests/mce-test/tools/Makefile
++++ b/tools/tests/mce-test/tools/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../../../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ 
+ INCLUDES += -I $(XEN_XC)
+ INCLUDES += -I $(XEN_LIBXC)
+diff --git a/tools/tests/xen-access/Makefile b/tools/tests/xen-access/Makefile
+index aed8912..16716db 100644
+--- a/tools/tests/xen-access/Makefile
++++ b/tools/tests/xen-access/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ 
+ INCLUDES += -I $(XEN_XC)
+ INCLUDES += -I $(XEN_LIBXC)
+diff --git a/tools/vnet/libxutil/Makefile b/tools/vnet/libxutil/Makefile
+index 7b7e3c4..f6f7071 100644
+--- a/tools/vnet/libxutil/Makefile
++++ b/tools/vnet/libxutil/Makefile
+@@ -25,7 +25,7 @@ LIB_OBJS := $(LIB_SRCS:.c=.o)
+ PIC_OBJS := $(LIB_SRCS:.c=.opic)
+ 
+ $(call cc-option-add,CFLAGS,CC,-fgnu89-inline)
+-CFLAGS   += -Werror -fno-strict-aliasing
++CFLAGS   +=  -fno-strict-aliasing
+ CFLAGS   += -O3
+ #CFLAGS   += -g
+ 
+diff --git a/tools/vtpm/Rules.mk b/tools/vtpm/Rules.mk
+index c6a7487..2d314ba 100644
+--- a/tools/vtpm/Rules.mk
++++ b/tools/vtpm/Rules.mk
+@@ -9,7 +9,7 @@ include $(XEN_ROOT)/tools/Rules.mk
+ TOOLS_INSTALL_DIR = $(DESTDIR)/usr/bin
+ 
+ # General compiler flags
+-CFLAGS   = -Werror -g3 -I.
++CFLAGS   =  -g3 -I.
+ 
+ # Generic project files
+ HDRS	= $(wildcard *.h)
+diff --git a/tools/vtpm_manager/Rules.mk b/tools/vtpm_manager/Rules.mk
+index 461e13b..e480b88 100644
+--- a/tools/vtpm_manager/Rules.mk
++++ b/tools/vtpm_manager/Rules.mk
+@@ -9,7 +9,7 @@ include $(XEN_ROOT)/tools/Rules.mk
+ TOOLS_INSTALL_DIR = $(DESTDIR)/usr/bin
+ 
+ # General compiler flags
+-CFLAGS	= -Werror -g3 -I.
++CFLAGS	=  -g3 -I.
+ 
+ # Generic project files
+ HDRS	= $(wildcard *.h)
+diff --git a/tools/xcutils/Makefile b/tools/xcutils/Makefile
+index 5872d57..87ff1e1 100644
+--- a/tools/xcutils/Makefile
++++ b/tools/xcutils/Makefile
+@@ -11,7 +11,7 @@
+ XEN_ROOT	= $(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS += -Werror
++CFLAGS += 
+ CFLAGS += $(CFLAGS_libxenctrl) $(CFLAGS_libxenguest) $(CFLAGS_libxenstore)
+ 
+ PROGRAMS = xc_restore xc_save readnotes lsevtchn
+diff --git a/tools/xenbackendd/Makefile b/tools/xenbackendd/Makefile
+index 4950134..5051110 100644
+--- a/tools/xenbackendd/Makefile
++++ b/tools/xenbackendd/Makefile
+@@ -12,7 +12,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ CFLAGS  += $(CFLAGS_libxenstore)
+ CPPFLAGS += -DXEN_SCRIPT_DIR="\"$(XEN_SCRIPT_DIR)\""
+ LDLIBS  += $(LDLIBS_libxenstore)
+diff --git a/tools/xenmon/Makefile b/tools/xenmon/Makefile
+index bde12f2..faf1b49 100644
+--- a/tools/xenmon/Makefile
++++ b/tools/xenmon/Makefile
+@@ -13,7 +13,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ CFLAGS  += -I $(XEN_XC)
+ CFLAGS  += $(CFLAGS_libxenctrl)
+ LDLIBS  += $(LDLIBS_libxenctrl)
+diff --git a/tools/xenpaging/Makefile b/tools/xenpaging/Makefile
+index ab886f5..e7af5db 100644
+--- a/tools/xenpaging/Makefile
++++ b/tools/xenpaging/Makefile
+@@ -11,7 +11,7 @@ POLICY    = default
+ SRC      :=
+ SRCS     += file_ops.c xc.c xenpaging.c policy_$(POLICY).c
+ 
+-CFLAGS   += -Werror
++CFLAGS   += 
+ CFLAGS   += -Wno-unused
+ CFLAGS   += -g
+ 
+diff --git a/tools/xenpmd/Makefile b/tools/xenpmd/Makefile
+index 2a9249c..22f9dab 100644
+--- a/tools/xenpmd/Makefile
++++ b/tools/xenpmd/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ CFLAGS  += $(CFLAGS_libxenstore)
+ LDLIBS += $(LDLIBS_libxenstore)
+ 
+diff --git a/tools/xenstat/libxenstat/Makefile b/tools/xenstat/libxenstat/Makefile
+index 618480a..dfca710 100644
+--- a/tools/xenstat/libxenstat/Makefile
++++ b/tools/xenstat/libxenstat/Makefile
+@@ -34,7 +34,7 @@ OBJECTS-$(CONFIG_SunOS) += src/xenstat_solaris.o
+ OBJECTS-$(CONFIG_NetBSD) += src/xenstat_netbsd.o
+ SONAME_FLAGS=-Wl,$(SONAME_LDFLAG) -Wl,libxenstat.so.$(MAJOR)
+ 
+-WARN_FLAGS=-Wall -Werror
++WARN_FLAGS=-Wall
+ 
+ CFLAGS+=-Isrc -I$(XEN_LIBXC) -I$(XEN_XENSTORE) -I$(XEN_INCLUDE)
+ LDFLAGS+=-Lsrc -L$(XEN_XENSTORE)/ -L$(XEN_LIBXC)/
+diff --git a/tools/xenstat/xentop/Makefile b/tools/xenstat/xentop/Makefile
+index d31ba06..a143f55 100644
+--- a/tools/xenstat/xentop/Makefile
++++ b/tools/xenstat/xentop/Makefile
+@@ -18,7 +18,7 @@ ifneq ($(XENSTAT_XENTOP),y)
+ all install xentop:
+ else
+ 
+-CFLAGS += -DGCC_PRINTF -Wall -Werror -I$(XEN_LIBXENSTAT)
++CFLAGS += -DGCC_PRINTF -Wall  -I$(XEN_LIBXENSTAT)
+ LDFLAGS += -L$(XEN_LIBXENSTAT)
+ LDLIBS += -lxenstat $(CURSES_LIBS) $(SOCKET_LIBS)
+ CFLAGS += -DHOST_$(XEN_OS)
+diff --git a/tools/xenstore/Makefile b/tools/xenstore/Makefile
+index 788401d..580b5f9 100644
+--- a/tools/xenstore/Makefile
++++ b/tools/xenstore/Makefile
+@@ -4,7 +4,7 @@ include $(XEN_ROOT)/tools/Rules.mk
+ MAJOR = 3.0
+ MINOR = 0
+ 
+-CFLAGS += -Werror
++CFLAGS += 
+ CFLAGS += -I.
+ CFLAGS += $(CFLAGS_libxenctrl)
+ 
+diff --git a/tools/xenstore/xenstored_core.c b/tools/xenstore/xenstored_core.c
+index 1749740..d2f438d 100644
+--- a/tools/xenstore/xenstored_core.c
++++ b/tools/xenstore/xenstored_core.c
+@@ -865,7 +865,7 @@ static void do_write(struct connection *conn, struct buffered_data *in)
+ {
+ 	unsigned int offset, datalen;
+ 	struct node *node;
+-	char *vec[1] = { NULL }; /* gcc4 + -W + -Werror fucks code. */
++	char *vec[1] = { NULL }; /* gcc4 + -W +  fucks code. */
+ 	char *name;
+ 
+ 	/* Extra "strings" can be created by binary data. */
+diff --git a/tools/xentrace/Makefile b/tools/xentrace/Makefile
+index 46b1879..1a8fb4f 100644
+--- a/tools/xentrace/Makefile
++++ b/tools/xentrace/Makefile
+@@ -1,7 +1,7 @@
+ XEN_ROOT=$(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
+-CFLAGS  += -Werror
++CFLAGS  += 
+ 
+ CFLAGS  += $(CFLAGS_libxenctrl)
+ LDLIBS += $(LDLIBS_libxenctrl)
+diff --git a/xen/arch/ia64/Rules.mk b/xen/arch/ia64/Rules.mk
+index bef11c3..319b797 100644
+--- a/xen/arch/ia64/Rules.mk
++++ b/xen/arch/ia64/Rules.mk
+@@ -68,7 +68,7 @@ ifeq ($(xen_ia64_tlbflush_clock),y)
+ CFLAGS += -DCONFIG_XEN_IA64_TLBFLUSH_CLOCK
+ endif
+ ifeq ($(no_warns),y)
+-CFLAGS	+= -Wa,--fatal-warnings -Werror -Wno-uninitialized
++CFLAGS	+= -Wa,--fatal-warnings  -Wno-uninitialized
+ endif
+ ifneq ($(vhpt_disable),y)
+ CFLAGS += -DVHPT_ENABLED=1
+diff --git a/xen/arch/x86/Rules.mk b/xen/arch/x86/Rules.mk
+index ec3abdd..8d84d0a 100644
+--- a/xen/arch/x86/Rules.mk
++++ b/xen/arch/x86/Rules.mk
+@@ -17,7 +17,7 @@ CFLAGS += -nostdinc
+ endif
+ 
+ CFLAGS += -fno-builtin -fno-common -Wredundant-decls
+-CFLAGS += -iwithprefix include -Werror -Wno-pointer-arith -pipe
++CFLAGS += -iwithprefix include -Wno-pointer-arith -pipe
+ CFLAGS += -I$(BASEDIR)/include 
+ CFLAGS += -I$(BASEDIR)/include/asm-x86/mach-generic
+ CFLAGS += -I$(BASEDIR)/include/asm-x86/mach-default
+diff --git a/xen/arch/x86/boot/build32.mk b/xen/arch/x86/boot/build32.mk
+index 809ddf2..a6e4be5 100644
+--- a/xen/arch/x86/boot/build32.mk
++++ b/xen/arch/x86/boot/build32.mk
+@@ -4,7 +4,7 @@ include $(XEN_ROOT)/Config.mk
+ 
+ $(call cc-options-add,CFLAGS,CC,$(EMBEDDED_EXTRA_CFLAGS))
+ 
+-CFLAGS += -Werror -fno-builtin -msoft-float
++CFLAGS += -fno-builtin -msoft-float
+ 
+ # NB. awk invocation is a portable alternative to 'head -n -1'
+ %.S: %.bin
+diff --git a/xen/arch/x86/x86_64/entry.S b/xen/arch/x86/x86_64/entry.S
+index 61938f8..f369675 100644
+--- a/xen/arch/x86/x86_64/entry.S
++++ b/xen/arch/x86/x86_64/entry.S
+@@ -43,7 +43,7 @@ restore_all_guest:
+         addq  $8,%rsp
+         popq  %rcx                    # RIP
+         popq  %r11                    # CS
+-        cmpw  $FLAT_USER_CS32,%r11
++        cmpq  $FLAT_USER_CS32,%r11
+         popq  %r11                    # RFLAGS
+         popq  %rsp                    # RSP
+         je    1f
+diff --git a/xen/include/Makefile b/xen/include/Makefile
+index 420294c..2f787d9 100644
+--- a/xen/include/Makefile
++++ b/xen/include/Makefile
+@@ -80,7 +80,7 @@ ifeq ($(CONFIG_IA64),)
+ all: headers.chk
+ 
+ headers.chk: $(filter-out public/arch-% public/%ctl.h public/xsm/% public/%hvm/save.h, $(wildcard public/*.h public/*/*.h) $(public-y)) Makefile
+-	for i in $(filter %.h,$^); do $(CC) -ansi -include stdint.h -Wall -W -Werror -S -o /dev/null -xc $$i || exit 1; echo $$i; done >$@.new
++	for i in $(filter %.h,$^); do $(CC) -ansi -include stdint.h -Wall -W -S -o /dev/null -xc $$i || exit 1; echo $$i; done >$@.new
+ 	mv $@.new $@
+ 
+ endif
