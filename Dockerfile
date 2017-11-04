@@ -6,4 +6,5 @@ RUN find /etc/apt/ -type f -exec sed -i 's/# deb-src/deb-src/g' {} +
 RUN find /etc/apt/ -type f -exec sed -i 's/#deb-src/deb-src/g' {} +
 RUN apt-get update -qq
 RUN apt-get build-dep xen qemu -y
+RUN apt-get install -y git
 ENTRYPOINT [ "make" ]
